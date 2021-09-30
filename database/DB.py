@@ -8,6 +8,6 @@ class DB:
         self.connection = connection.get_connection()
 
     async def create_tables(self):
-        with open("sql/create_auth_data.sql", "r") as f:
+        with open("sql/authentication_data.sql", "r") as f:
             query = f.read()
             await self.connection.fetch(query)
