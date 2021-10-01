@@ -2,23 +2,22 @@ import asyncpg
 
 
 class Database:
-    connection: asyncpg.Connection
+    __connection: asyncpg.Connection
 
-    def __init__(self, connection):
-        self.connection = connection.get_connection()
+    @classmethod
+    async def initialization(cls, connection: asyncpg.Connection):
+        cls.__connection = connection
+        await cls.create_tables()
 
-    async def create_tables(self):
-        result = await self.connection.fetch(
+    @classmethod
+    async def create_tables(cls):
+        result = await cls.__connection.fetch(
             "select count(*) from information_schema.tables where table_schema='public';")
         if result[0]['count'] == 0:
-            await self.create_table_authentication_data()
+            await cls.create_table_authentication_data()
 
-    async def create_table_authentication_data(self):
+    @classmethod
+    async def create_table_authentication_data(cls):
         with open("sql/create/authentication_data.sql", "r") as f:
             query = f.read()
-            await self.connection.fetch(query)
-
-    async def verify_password_hash(self, login, password):
-        stmt = await self.connection.prepare("SELECT password_hash FROM authentication_data WHERE login = $1;")
-        result = await stmt.fetchval(login)
-        return True if result == password else False
+            await cls.__connection.fetch(query)
