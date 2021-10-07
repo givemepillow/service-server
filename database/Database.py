@@ -3,8 +3,9 @@ import asyncpg
 
 class Database:
     __connection: asyncpg.Connection
-    AUTHENTICATION_QUERY = 'SELECT login FROM users WHERE login = $1'
     REGISTRATION_QUERY = 'INSERT INTO users(login, email, first_name, last_name) VALUES ($1, $2, $3, $4)'
+    LOGIN_QUERY = 'SELECT login FROM users WHERE login = $1'
+    EMAIL_QUERY = 'SELECT email FROM users WHERE email = $1'
 
     @classmethod
     async def initialization(cls, connection: asyncpg.Connection):
@@ -13,10 +14,18 @@ class Database:
 
     @classmethod
     async def authentication(cls, login, password):
-        result = await cls.__connection.fetch(cls.AUTHENTICATION_QUERY, login)
+        result = await cls.__connection.fetch(cls.LOGIN_QUERY, login)
         if len(result) == 0:
             return False
         return True if login == result[0]['login'] else False
+
+    @classmethod
+    async def email_and_login(cls, email, login):
+        result1 = await cls.__connection.fetch(cls.LOGIN_QUERY, login)
+        result2 = await cls.__connection.fetch(cls.EMAIL_QUERY, login)
+        if len(result1) == 0 and len(result2) == 0:
+            return True
+        return False
 
     @classmethod
     async def registration(cls, login, password, first_name, last_name, email):
