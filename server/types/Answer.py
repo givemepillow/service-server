@@ -1,25 +1,9 @@
 class Answer:
-    UNDEFINED_REQUEST = {
-        'type': 1,
-        'message': 'Undefined request.'
-    }
-
-    UNEXPECTED_ERROR = {
-        'type': 1,
-        'message': 'Unexpected error.'
-    }
-
-    REGISTRATION_ACCEPTED = {
-        'type': 2,
-        'message': ''
-    }
-
-    REGISTRATION_VERIFICATION = {
-        'type': 4,
-        'message': ''
-    }
-
-    AUTHENTICATION_ACCEPTED = {
-        'answer_type': 3,
-        'message': ''
-    }
+    # request starts with 1, code length - 3
+    # answers starts with 2, code length - 3
+    ERROR = 201
+    REGISTRATION_ACCEPTED = 203
+    AUTHENTICATION_ACCEPTED = 202
+    REGISTRATION_VERIFICATION = 204
+    AUTHENTICATION_REJECTED = 205
+    REGISTRATION_REJECTED = 206
