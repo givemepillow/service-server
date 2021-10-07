@@ -17,3 +17,6 @@ class Mail:
         mail_text.set_from(self.__from)
         mail_text.set_to(to)
         self.__server.sendmail(self.__from, to, mail_text.get_text())
+
+
+mail_instance = Mail('kirilllapushinskiy.bot@gmail.com', '2002K3r1llk4#BOT')
