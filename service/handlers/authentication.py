@@ -1,6 +1,6 @@
-from converters import AnswerConstructor
+from service.converters import AnswerConstructor
 from database import Database
-from handlers.types import Answer
+from service.handlers.types import Answer
 
 
 async def authentication(request):

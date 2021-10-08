@@ -8,9 +8,8 @@ class Database:
     EMAIL_QUERY = 'SELECT email FROM users WHERE email = $1'
 
     @classmethod
-    async def initialization(cls, connection: asyncpg.Connection):
+    async def connect(cls, connection: asyncpg.Connection):
         cls.__connection = connection
-        await cls.create_tables()
 
     @classmethod
     async def authentication(cls, login, password):
@@ -44,23 +43,3 @@ class Database:
         except asyncpg.exceptions.CheckViolationError or asyncpg.exceptions.UniqueViolationError as e:
             print(e)
             return False
-
-    @classmethod
-    async def create_tables(cls):
-        result = await cls.__connection.fetch(
-            "select count(*) from information_schema.tables where table_schema='public';")
-        if result[0]['count'] == 0:
-            await cls.create_table_users()
-            await cls.create_table_authentication_data()
-
-    @classmethod
-    async def create_table_authentication_data(cls):
-        with open("sql/create/authentication_data.sql", "r") as f:
-            query = f.read()
-            await cls.__connection.execute(query)
-
-    @classmethod
-    async def create_table_users(cls):
-        with open("sql/create/users.sql", "r") as f:
-            query = f.read()
-            await cls.__connection.execute(query)

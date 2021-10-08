@@ -1,1 +1,1 @@
-from .Dispatcher import Handler
+from .Dispatcher import RequestManager

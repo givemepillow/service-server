@@ -1,6 +1,6 @@
 import asyncio
 
-from .Handler import Handler
+from dispatcher.Dispatcher import RequestManager
 
 
 class Server:
@@ -10,7 +10,7 @@ class Server:
     async def handle(cls, reader, writer):
         data = await reader.read(cls.__buffer_size)
         request = data.decode('utf-8')
-        answer = await Handler.handle_request(request)
+        answer = await RequestManager.handle_request(request)
         writer.write(answer)
         await writer.drain()
         writer.close()
@@ -22,8 +22,6 @@ class Server:
     @classmethod
     async def main(cls):
         server = await asyncio.start_server(cls.handle, '127.0.0.1', 6767)
-
-        # address = server.sockets[0].getsockname()
 
         async with server:
             await server.serve_forever()

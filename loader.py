@@ -2,16 +2,19 @@ from database import Connection, Database
 from mail import MailSender
 import envfileparser
 
-mail_sender = None
+
+class MailLoader:
+    sender: MailSender
+
+    @classmethod
+    async def start(cls):
+        cls.sender = MailSender.create()
 
 
-async def initialization():
-    global mail_sender
-    mail_sender = MailSender.create()
-
-    envs = envfileparser.get_env_from_file()
-    # Creating connection with database.
-    await Connection.connect(envs['USER'], envs['PASSWORD'], envs['DB'], envs['HOST'])
-
-    # Init db with connection - creating tables if they not exists.
-    await Database.initialization(Connection.connection())
+class DatabaseLoader:
+    @classmethod
+    async def start(cls):
+        envs = envfileparser.get_env_from_file()
+        # Creating connection with database.
+        connection = await Connection.create(envs['USER'], envs['PASSWORD'], envs['DB'], envs['HOST'])
+        await Database.connect(connection)

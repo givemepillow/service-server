@@ -1,8 +1,8 @@
-from converters import RequestParser
-from handlers import handlers
+from service.converters import RequestParser
+from service.handlers import handlers
 
 
-class Handler:
+class RequestManager:
     @classmethod
     async def handle_request(cls, data):
         request = RequestParser.extract_request(data)

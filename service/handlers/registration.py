@@ -1,7 +1,7 @@
 from database import Database
-from converters import AnswerConstructor
-from handlers.types import Answer
-from verification import Verify
+from service.converters import AnswerConstructor
+from service.handlers.types import Answer
+from service.verification import Verify
 
 
 async def registration(request):

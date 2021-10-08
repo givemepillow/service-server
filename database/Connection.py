@@ -5,7 +5,7 @@ class Connection:
     __connection: asyncpg.connection
 
     @classmethod
-    async def connect(cls, user, password, database, host):
+    async def create(cls, user, password, database, host):
         try:
             cls.__connection = await asyncpg.connect(
                 user=user,
@@ -16,8 +16,6 @@ class Connection:
         except asyncpg.exceptions.InvalidPasswordError as e:
             print(f"{str(e).capitalize()}.")
 
-    @classmethod
-    def connection(cls):
         return cls.__connection
 
     @classmethod

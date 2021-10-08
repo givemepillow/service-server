@@ -2,7 +2,7 @@ from .authentication import authentication
 from .registration import registration
 from .email_verification import email_verification
 from .code_verification import code_verification
-from handlers.types import Request
+from service.handlers.types import Request
 
 handlers = {
     Request.AUTHENTICATION_REQUEST: authentication,
