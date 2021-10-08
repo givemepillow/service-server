@@ -1,7 +1,9 @@
 import smtplib
 
+from .MailText import MailText
 
-class Mail:
+
+class MailService:
     def __init__(self, user, password):
         try:
             self.__from = user
@@ -11,15 +13,15 @@ class Mail:
         except smtplib.SMTPAuthenticationError:
             raise Exception("Ошибка аутентификации почтового сервера :(")
         except ConnectionRefusedError:
-            raise Exception("Ошибка установик соединения с почтовым сервером :(")
+            raise ConnectionRefusedError("Ошибка установик соединения с почтовым сервером :(")
 
-    def send(self, to, mail_text):
+    async def send(self, to, mail_text: MailText):
         try:
             mail_text.set_from(self.__from)
             mail_text.set_to(to)
             self.__server.sendmail(self.__from, to, mail_text.get_text())
         except smtplib.SMTPRecipientsRefused:
-            raise Exception("Не удалось отправить код по указанному адресу :(")
+            raise smtplib.SMTPRecipientsRefused("Не удалось отправить код по указанному адресу :(")
 
-
-mail_instance = Mail('kirilllapushinskiy.bot@gmail.com', '2002K3r1llk4#BOT')
+    def create_mail(self, subject, body):
+        return MailText(subject, body)
