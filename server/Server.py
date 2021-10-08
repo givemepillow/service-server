@@ -1,6 +1,6 @@
 import asyncio
 
-from dispatcher.Dispatcher import RequestManager
+from service.dispatcher.RequestManager import RequestManager
 
 
 class Server:
