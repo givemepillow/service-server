@@ -20,10 +20,16 @@ class Database:
         return True if login == result[0]['login'] else False
 
     @classmethod
-    async def email_and_login(cls, email, login):
-        result1 = await cls.__connection.fetch(cls.LOGIN_QUERY, login)
-        result2 = await cls.__connection.fetch(cls.EMAIL_QUERY, login)
-        if len(result1) == 0 and len(result2) == 0:
+    async def exists_email(cls, email):
+        result = await cls.__connection.fetch(cls.EMAIL_QUERY, email)
+        if len(result) == 0:
+            return True
+        return False
+
+    @classmethod
+    async def exists_login(cls, login):
+        result = await cls.__connection.fetch(cls.LOGIN_QUERY, login)
+        if len(result) == 0:
             return True
         return False
 
