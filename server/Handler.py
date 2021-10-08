@@ -22,14 +22,14 @@ class Handler:
             elif RequestParser.assert_request(request, Request.VERIFICATION_REQUEST):
                 to_send = await cls.__verification(request)
             else:
-                to_send = AnswerConstructor.create(Answer.ERROR, "Серверу не удалось распознать запрос :(")
+                raise Exception("Серверу не удалось распознать запрос :(")
         except Exception as e:
             to_send = AnswerConstructor.create(Answer.ERROR, str(e))
         return bytes(to_send, encoding="utf-8")
 
     @classmethod
     async def __registration(cls, request):
-        if Verify.is_verified_email(request['email']):
+        if await Verify.is_verified_email(request['email']):
             db_answer = await Database.registration(
                 request['login'],
                 request['password'],
@@ -61,12 +61,12 @@ class Handler:
             return AnswerConstructor.create(Answer.REJECT, 'Данный email уже зарегистрирован!')
         if not await Database.exists_login(request['login']):
             return AnswerConstructor.create(Answer.REJECT, 'Данный логин уже зарегистрирован!')
-        Verify.add_code(request['email'])
+        await Verify.add_code(request['email'])
         return AnswerConstructor.create(Answer.ACCEPT)
 
     @classmethod
     async def __verification(cls, request):
-        if Verify.verification(request['email'], request['code']):
+        if await Verify.verification(request['email'], request['code']):
             return AnswerConstructor.create(Answer.ACCEPT)
         else:
             return AnswerConstructor.create(Answer.REJECT, 'Неверный код!')
