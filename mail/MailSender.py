@@ -16,7 +16,7 @@ class MailSender:
         cls.INSTANCE = True
         return MailSender()
 
-    def __call__(self, destination, subject, body):
+    async def __call__(self, destination, subject, body):
         return self.service.service.users().messages().send(
             userId="me",
             body=MailBuilder.create(destination, subject, body)
