@@ -1,6 +1,6 @@
 from random import randint, seed
 from datetime import datetime
-from loader import mail
+from loader import mail_sender
 
 
 class VCode:
@@ -20,7 +20,7 @@ class Verify:
         code = VCode()
         cls.email_codes[email] = code
         cls.size += 1
-        await mail.send(email, mail.create_mail('Подтверждение почты.', f"Ваш код подтверждения: {code.code}"))
+        await mail_sender(email, 'Подтверждение почты.', f"Ваш код подтверждения: {code.code}")
         if cls.size > 50:
             cls.__clear_old()
 
