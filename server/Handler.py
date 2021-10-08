@@ -22,9 +22,9 @@ class Handler:
             elif RequestParser.assert_request(request, Request.VERIFICATION_REQUEST):
                 to_send = await cls.__verification(request)
             else:
-                to_send = AnswerConstructor.create(Answer.ERROR, "Undefined request.")
-        except Exception:
-            to_send = AnswerConstructor.create(Answer.ERROR, "Unexpected error.")
+                to_send = AnswerConstructor.create(Answer.ERROR, "Серверу не удалось распознать запрос :(")
+        except Exception as e:
+            to_send = AnswerConstructor.create(Answer.ERROR, str(e))
         return bytes(to_send, encoding="utf-8")
 
     @classmethod
@@ -57,19 +57,16 @@ class Handler:
 
     @classmethod
     async def __email_and_login(cls, request):
-        db_answer = await Database.email_and_login(
-            request['email'],
-            request['login']
-        )
-        if db_answer:
-            Verify.add_code(request['email'])
-            return AnswerConstructor.create(Answer.ACCEPT)
-        else:
-            return AnswerConstructor.create(Answer.REJECT)
+        if not await Database.exists_email(request['email']):
+            return AnswerConstructor.create(Answer.REJECT, 'Данный email уже зарегистрирован!')
+        if not await Database.exists_login(request['login']):
+            return AnswerConstructor.create(Answer.REJECT, 'Данный логин уже зарегистрирован!')
+        Verify.add_code(request['email'])
+        return AnswerConstructor.create(Answer.ACCEPT)
 
     @classmethod
     async def __verification(cls, request):
         if Verify.verification(request['email'], request['code']):
             return AnswerConstructor.create(Answer.ACCEPT)
         else:
-            return AnswerConstructor.create(Answer.REJECT)
+            return AnswerConstructor.create(Answer.REJECT, 'Неверный код!')
