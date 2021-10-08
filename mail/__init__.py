@@ -1,1 +1,3 @@
-from .MailService import MailService
+from .MailSender import MailSender
+
+
