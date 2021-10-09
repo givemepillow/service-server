@@ -25,7 +25,7 @@ class DatabaseLoader:
 class LoggerLoader:
     @classmethod
     def start(cls):
-        logger.add('logs.log',
+        logger.add('logbook.log',
                    format="{time} {level} {message}",
                    rotation='100 KB',
                    compression='zip'
