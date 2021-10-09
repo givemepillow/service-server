@@ -1,3 +1,5 @@
+from loguru import logger
+
 from database import Connection, Database
 from mail import MailSender
 import envfileparser
@@ -18,3 +20,13 @@ class DatabaseLoader:
         # Creating connection with database.
         connection = await Connection.create(envs['USER'], envs['PASSWORD'], envs['DB'], envs['HOST'])
         await Database.connect(connection)
+
+
+class LoggerLoader:
+    @classmethod
+    def start(cls):
+        logger.add('logs.log',
+                   format="{time} {level} {message}",
+                   rotation='100 KB',
+                   compression='zip'
+                   )

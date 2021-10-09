@@ -1,10 +1,11 @@
 import asyncio
 
-from loader import DatabaseLoader, MailLoader
+from loader import DatabaseLoader, MailLoader, LoggerLoader
 from server import Server
 
 
 async def main():
+    LoggerLoader.start()
     await DatabaseLoader.start()
     await MailLoader.start()
     await Server.start()

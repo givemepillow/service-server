@@ -1,3 +1,6 @@
+import googleapiclient.errors
+from loguru import logger
+
 from .MailService import MailService
 from .MailBuilder import MailBuilder
 
@@ -16,8 +19,13 @@ class MailSender:
         cls.INSTANCE = True
         return MailSender()
 
-    async def __call__(self, destination, subject, body):
-        return self.service.service.users().messages().send(
-            userId="me",
-            body=MailBuilder.create(destination, subject, body)
-        ).execute()
+    @logger.catch
+    async def send(self, destination, subject, body):
+        try:
+            self.service.service.users().messages().send(
+                userId="me",
+                body=MailBuilder.create(destination, subject, body, '')
+            ).execute()
+            logger.info(f"Отправлен код по адресу: {destination}")
+        except googleapiclient.errors.HttpError:
+            logger.error(f"Не удалось отпраить электронное сообщение по адресу {destination}")
