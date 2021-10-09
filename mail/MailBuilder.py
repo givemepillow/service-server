@@ -7,8 +7,8 @@ class MailBuilder:
     __footer = '\n\nДанное сообщение сгенерировано автоматичеки.'
 
     @classmethod
-    def create(cls, destination, subject, body):
-        message = MIMEText(body + cls.__footer)
+    def create(cls, destination, subject, body, footer=__footer):
+        message = MIMEText(body + footer)
         message['to'] = destination
         message['from'] = 'me'
         message['subject'] = subject
