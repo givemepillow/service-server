@@ -9,10 +9,12 @@ class MailSender:
     service: MailService
     INSTANCE = False
 
+    @logger.catch
     def __init__(self):
         self.service = MailService()
 
     @classmethod
+    @logger.catch
     def create(cls):
         if cls.INSTANCE:
             raise Exception('Singleton mail service!')
