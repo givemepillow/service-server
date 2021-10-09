@@ -3,9 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# ENV
-.env
-
 # C extensions
 *.so
 
@@ -130,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# GMAIL
+*.pickle
+*.json
