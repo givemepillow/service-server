@@ -6,7 +6,10 @@ class AnswerConstructor:
 
     @classmethod
     def create(cls, answer_type, **kwargs):
-        return json.dumps({
+        json_dict = {
             'type': answer_type,
             'message': kwargs['message'] if 'message' in kwargs else cls.DEFAULT_MESSAGE
-        })
+        }
+        for v in kwargs:
+            json_dict[v] = kwargs[v]
+        return json.dumps(json_dict)
