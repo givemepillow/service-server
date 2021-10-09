@@ -31,7 +31,7 @@ class Verify:
     @classmethod
     async def verification(cls, email, code):
         try:
-            if cls.email_codes[email].code == int(code):
+            if cls.email_codes[email].code == code:
                 time = datetime.now().timestamp()
                 if (time - cls.email_codes[email].time) > 60 * 5:
                     del cls.email_codes[email]

@@ -1,10 +1,10 @@
 from service.converters import AnswerConstructor
-from service.handlers.types import Answer
+from service.types import AnswerType
 from service.verification import Verify
 
 
 async def code_verification(request):
-    if await Verify.verification(request['email'], request['code']):
-        return AnswerConstructor.create(Answer.ACCEPT)
+    if await Verify.verification(request.data.email, request.data.code):
+        return AnswerConstructor.create(AnswerType.ACCEPT)
     else:
-        return AnswerConstructor.create(Answer.REJECT, message='Неверный код!')
+        return AnswerConstructor.create(AnswerType.REJECT, message='Неверный код!')
