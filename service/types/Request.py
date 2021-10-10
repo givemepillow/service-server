@@ -7,13 +7,13 @@ from pydantic import BaseModel
 class RequestType(enum.Enum):
     # request starts with 1, code length - 3
     # answers starts with 2, code length - 3
-    AUTHENTICATION_REQUEST = 101
-    REGISTRATION_REQUEST = 102
-    CODE_VERIFICATION_REQUEST = 103
-    EMAIL_VERIFICATION_REQUEST = 104
+    AUTHENTICATION = 101
+    REGISTRATION = 102
+    CODE_VERIFICATION = 103
+    EMAIL_VERIFICATION = 104
 
 
-class RegistrationRequest(BaseModel):
+class Registration(BaseModel):
     login: str
     email: str
     first_name: str
@@ -21,24 +21,26 @@ class RegistrationRequest(BaseModel):
     password: str
 
 
-class AuthenticationRequest(BaseModel):
+class Authentication(BaseModel):
     login: str
     password: str
 
 
-class EmailValidationRequest(BaseModel):
+class EmailValidation(BaseModel):
     login: str
     email: str
 
 
-class CodeValidationRequest(BaseModel):
+class CodeValidation(BaseModel):
     email: str
     email_code: int
 
 
 class Request(BaseModel):
     type: RequestType
-    data: Union[RegistrationRequest,
-                AuthenticationRequest,
-                CodeValidationRequest,
-                EmailValidationRequest]
+    data: Union[
+        Registration,
+        Authentication,
+        CodeValidation,
+        EmailValidation
+    ]

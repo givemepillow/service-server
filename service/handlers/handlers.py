@@ -5,8 +5,8 @@ from .code_verification import code_verification
 from service.types import RequestType
 
 handlers = {
-    RequestType.AUTHENTICATION_REQUEST: authentication,
-    RequestType.REGISTRATION_REQUEST: registration,
-    RequestType.EMAIL_VERIFICATION_REQUEST: email_verification,
-    RequestType.CODE_VERIFICATION_REQUEST: code_verification
+    RequestType.AUTHENTICATION: authentication,
+    RequestType.REGISTRATION: registration,
+    RequestType.EMAIL_VERIFICATION: email_verification,
+    RequestType.CODE_VERIFICATION: code_verification
 }
