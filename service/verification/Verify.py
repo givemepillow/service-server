@@ -20,7 +20,7 @@ class Verify:
         code = VCode()
         cls.email_codes[email] = code
         cls.size += 1
-        await Mail.sender.send(email,'Подтверждение почты.', f"Ваш код подтверждения: {code.code}")
+        await Mail.sender.send(email, 'Подтверждение почты.', f"Ваш код подтверждения: {code.code}")
         if cls.size > 50:
             cls.__clear_old()
 

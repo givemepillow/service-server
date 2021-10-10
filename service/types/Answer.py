@@ -7,9 +7,9 @@ from pydantic import BaseModel
 class AnswerType(enum.Enum):
     # request starts with 1, code length - 3
     # answers starts with 2, code length - 3
-    ERROR = 201
-    REJECT = 202
-    ACCEPT = 203
+    ERROR: int = 201
+    REJECT: int = 202
+    ACCEPT: int = 203
 
 
 class Error(BaseModel):

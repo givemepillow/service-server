@@ -7,10 +7,10 @@ from pydantic import BaseModel
 class RequestType(enum.Enum):
     # request starts with 1, code length - 3
     # answers starts with 2, code length - 3
-    AUTHENTICATION = 101
-    REGISTRATION = 102
-    CODE_VERIFICATION = 103
-    EMAIL_VERIFICATION = 104
+    AUTHENTICATION: int = 101
+    REGISTRATION: int = 102
+    CODE_VERIFICATION: int = 103
+    EMAIL_VERIFICATION: int = 104
 
 
 class Registration(BaseModel):
