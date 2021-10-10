@@ -1,15 +1,17 @@
 import json
+from service.types.Answer import Answer, AnswerType, answers
 
 
 class AnswerConstructor:
-    DEFAULT_MESSAGE = 'Unexpected error.'
 
     @classmethod
-    def create(cls, answer_type, **kwargs):
-        json_dict = {
-            'type': answer_type,
-            'message': kwargs['message'] if 'message' in kwargs else cls.DEFAULT_MESSAGE
-        }
-        for v in kwargs:
-            json_dict[v] = kwargs[v]
-        return json.dumps(json_dict)
+    def create(cls, answer_type: AnswerType, **kwargs):
+        answer = dict()
+        answer['type'] = answer_type
+        data = dict()
+        for field in kwargs:
+            if field not in answers[answer_type].__dict__['__fields__'].keys():
+                raise ValueError(f"Получено неизвестное поле: {field}.")
+            data[field] = kwargs[field]
+        answer['data'] = data
+        return json.dumps(Answer.parse_obj(answer).json())
