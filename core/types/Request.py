@@ -1,6 +1,5 @@
 import enum
-from dataclasses import dataclass
-from typing import Union
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -12,6 +11,11 @@ class RequestType(enum.Enum):
     REGISTRATION: int = 102
     CODE_VERIFICATION: int = 103
     EMAIL_VERIFICATION: int = 104
+    ENCRYPTION_KEY: int = 105
+
+
+class EncryptionKey(BaseModel):
+    pass
 
 
 class Registration(BaseModel):
@@ -37,12 +41,16 @@ class CodeValidation(BaseModel):
     email_code: int
 
 
-@dataclass
 class Request(BaseModel):
     type: RequestType
-    data: Union[
-        Registration,
-        Authentication,
-        CodeValidation,
-        EmailValidation
-    ]
+    data: Optional[bytes]
+    ip: str
+
+
+requests = {
+    RequestType.AUTHENTICATION: Authentication,
+    RequestType.ENCRYPTION_KEY: EncryptionKey,
+    RequestType.REGISTRATION: Registration,
+    RequestType.CODE_VERIFICATION: CodeValidation,
+    RequestType.EMAIL_VERIFICATION: EmailValidation
+}

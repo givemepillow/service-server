@@ -1,4 +1,5 @@
 import enum
+from dataclasses import dataclass
 from typing import Union
 
 from pydantic import BaseModel
@@ -10,18 +11,35 @@ class AnswerType(enum.Enum):
     ERROR: int = 201
     REJECT: int = 202
     ACCEPT: int = 203
+    KEY: int = 205
 
 
-class Error(BaseModel):
+@dataclass
+class Key:
+    key: bytes
+
+
+@dataclass
+class Error:
     message: str
 
 
-class Reject(BaseModel):
+@dataclass
+class Reject:
     cause: str
 
 
-class Accept(BaseModel):
-    pass
+@dataclass
+class Accept:
+    message: str
+
+
+answers = {
+    AnswerType.ERROR: Error,
+    AnswerType.REJECT: Reject,
+    AnswerType.ACCEPT: Accept,
+    AnswerType.KEY: Key
+}
 
 
 class Answer(BaseModel):
@@ -29,12 +47,6 @@ class Answer(BaseModel):
     data: Union[
         Error,
         Reject,
-        Accept
+        Accept,
+        Key
     ]
-
-
-answers = {
-    AnswerType.ERROR: Error,
-    AnswerType.REJECT: Reject,
-    AnswerType.ACCEPT: Accept
-}
