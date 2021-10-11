@@ -1,4 +1,5 @@
 import enum
+from dataclasses import dataclass
 from typing import Union
 
 from pydantic import BaseModel
@@ -36,6 +37,7 @@ class CodeValidation(BaseModel):
     email_code: int
 
 
+@dataclass
 class Request(BaseModel):
     type: RequestType
     data: Union[
