@@ -1,6 +1,6 @@
-from service.converters import AnswerConstructor
+from core.converters import AnswerConstructor
 from database import Database
-from service.types import AnswerType
+from core.data_model import AnswerType
 
 
 async def authentication(request):

@@ -1,5 +1,5 @@
 import json
-from service.types import Request
+from core.data_model import Request
 
 
 class RequestParser:

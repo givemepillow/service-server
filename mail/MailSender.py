@@ -17,7 +17,7 @@ class MailSender:
     @logger.catch
     def create(cls):
         if cls.INSTANCE:
-            raise Exception('Singleton mail service!')
+            raise Exception('Singleton mail core!')
         cls.INSTANCE = True
         return MailSender()
 

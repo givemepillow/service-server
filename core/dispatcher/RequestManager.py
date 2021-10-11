@@ -1,5 +1,5 @@
-from service.converters import RequestParser
-from service.handlers import handlers
+from core.converters import RequestParser
+from core.handlers import handlers
 
 
 class RequestManager:

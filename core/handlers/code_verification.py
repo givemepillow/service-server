@@ -1,6 +1,6 @@
-from service.converters import AnswerConstructor
-from service.types import AnswerType
-from service.verification import Verify
+from core.converters import AnswerConstructor
+from core.data_model import AnswerType
+from core.verification import Verify
 
 
 async def code_verification(request):
