@@ -1,5 +1,6 @@
 from loguru import logger
 
+from core.security import Cryptographer
 from database import Connection, Database
 from mail import MailSender
 import envfileparser
@@ -30,3 +31,9 @@ class LoggerLoader:
                    rotation='100 KB',
                    compression='zip'
                    )
+
+
+class CryptographerLoader:
+    @classmethod
+    def start(cls):
+        Cryptographer.generate_key()
