@@ -12,7 +12,7 @@ class Database:
         cls.__connection = connection
 
     @classmethod
-    async def authentication(cls, login, password):
+    async def authentication(cls, login, email, password):
         result = await cls.__connection.fetch(cls.LOGIN_QUERY, login)
         if len(result) == 0:
             return False
