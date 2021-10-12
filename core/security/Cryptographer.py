@@ -19,9 +19,9 @@ class Cryptographer:
         )
 
     @classmethod
-    def decrypt(cls, data):
+    def decrypt(cls, password):
         return cls.private_key.decrypt(
-            base64.b64encode(data),
+            base64.b64decode(password),
             padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
                 algorithm=hashes.SHA256(),
