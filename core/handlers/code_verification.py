@@ -1,10 +1,14 @@
+from loguru import logger
+
 from core.converters import AnswerConstructor
-from core.data_model import AnswerType
+from core.types import AnswerType
 from core.verification import Verify
 
 
 async def code_verification(request):
     if await Verify.verification(request.data.email, request.data.code):
-        return AnswerConstructor.create(AnswerType.ACCEPT)
+        logger.info(f'Подтверждён код из почты для нового пользователя {request.data.email}: {request.ip}')
+        return AnswerConstructor.create(AnswerType.ACCEPT, info='Адрес электронной почты подтверждён.')
     else:
-        return AnswerConstructor.create(AnswerType.REJECT, message='Неверный код!')
+        logger.info(f'Отклонён код подтверждения для нового пользователя {request.data.email}: {request.ip}')
+        return AnswerConstructor.create(AnswerType.REJECT, cause='Неверный код!')
