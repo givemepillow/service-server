@@ -1,5 +1,4 @@
 import enum
-from dataclasses import dataclass
 from typing import Union
 
 from pydantic import BaseModel
@@ -14,24 +13,20 @@ class AnswerType(enum.Enum):
     KEY: int = 205
 
 
-@dataclass
-class Key:
+class Key(BaseModel):
     key: bytes
 
 
-@dataclass
-class Error:
+class Error(BaseModel):
     message: str
 
 
-@dataclass
-class Reject:
+class Reject(BaseModel):
     cause: str
 
 
-@dataclass
-class Accept:
-    message: str
+class Accept(BaseModel):
+    info: str
 
 
 answers = {

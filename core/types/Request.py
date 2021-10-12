@@ -1,5 +1,5 @@
 import enum
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import BaseModel
 
@@ -15,7 +15,7 @@ class RequestType(enum.Enum):
 
 
 class EncryptionKey(BaseModel):
-    pass
+    email: str
 
 
 class Registration(BaseModel):
@@ -23,27 +23,34 @@ class Registration(BaseModel):
     email: str
     first_name: str
     last_name: str
-    password: str
+    password: bytes
 
 
 class Authentication(BaseModel):
-    login: str
-    password: str
+    login: Optional[str]
+    email: Optional[str]
+    password: bytes
 
 
-class EmailValidation(BaseModel):
-    login: str
+class EmailVerification(BaseModel):
     email: str
+    login: str
 
 
-class CodeValidation(BaseModel):
+class CodeVerification(BaseModel):
     email: str
-    email_code: int
+    code: int
 
 
 class Request(BaseModel):
     type: RequestType
-    data: Optional[bytes]
+    data: Union[
+        Registration,
+        CodeVerification,
+        EmailVerification,
+        Authentication,
+        EncryptionKey
+    ]
     ip: str
 
 
@@ -51,6 +58,6 @@ requests = {
     RequestType.AUTHENTICATION: Authentication,
     RequestType.ENCRYPTION_KEY: EncryptionKey,
     RequestType.REGISTRATION: Registration,
-    RequestType.CODE_VERIFICATION: CodeValidation,
-    RequestType.EMAIL_VERIFICATION: EmailValidation
+    RequestType.CODE_VERIFICATION: CodeVerification,
+    RequestType.EMAIL_VERIFICATION: EmailVerification
 }

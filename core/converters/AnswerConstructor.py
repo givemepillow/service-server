@@ -9,4 +9,4 @@ class AnswerConstructor:
         data = dict()
         for field in kwargs:
             data[field] = kwargs[field]
-        return Answer(type=answer_type, data=answers[answer_type](**data)).json()
+        return Answer(type=answer_type, data=answers[answer_type].parse_obj(data)).json()
