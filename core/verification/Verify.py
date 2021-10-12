@@ -4,10 +4,11 @@ from loader import MailLoader as Mail
 
 
 class VCode:
-    def __init__(self):
+    def __init__(self, login):
         self.time = datetime.now().timestamp()
         seed(self.time)
         self.code = randint(100000, 999999)
+        self.login = login
         self.verified = False
 
 
@@ -16,8 +17,8 @@ class Verify:
     size = 0
 
     @classmethod
-    async def add_code(cls, email):
-        code = VCode()
+    async def add_code(cls, email, login):
+        code = VCode(login)
         cls.email_codes[email] = code
         cls.size += 1
         await Mail.sender.send(email, 'Подтверждение почты.', f"Ваш код подтверждения: {code.code}")
@@ -25,8 +26,8 @@ class Verify:
             cls.__clear_old()
 
     @classmethod
-    async def is_verified_email(cls, email):
-        return email in cls.email_codes and cls.email_codes[email].verified is True
+    async def is_verified(cls, email, login):
+        return email in cls.email_codes and cls.email_codes[email].verified and cls.email_codes[email].login == login
 
     @classmethod
     async def verification(cls, email, code):
