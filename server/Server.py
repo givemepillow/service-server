@@ -4,7 +4,7 @@ from core.dispatcher.RequestManager import RequestManager
 
 
 class Server:
-    __buffer_size = 1024
+    __buffer_size = 1024 * 5
 
     @classmethod
     async def handle(cls, reader, writer):
