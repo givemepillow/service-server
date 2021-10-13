@@ -1,6 +1,8 @@
+import base64
+
 from loguru import logger
 
-from core.security import Cryptographer
+from core.security import Cryptographer, PasswordManager
 from database import Database
 from core.converters import AnswerConstructor
 from core.types import AnswerType
@@ -18,9 +20,10 @@ async def registration(request):
                 f" {request.ip}"
             )
             return AnswerConstructor.create(AnswerType.ERROR, message='Ошибка расшифровки пароля.')
+        password_hash = PasswordManager.hashing(password=encrypted_password)
         db_answer = await Database.registration(
             login=request.data.login,
-            password=encrypted_password,
+            password=password_hash,
             first_name=request.data.first_name,
             last_name=request.data.last_name,
             email=request.data.email
@@ -34,5 +37,6 @@ async def registration(request):
             return AnswerConstructor.create(AnswerType.REJECT, cause='Недопустимые данные.')
     else:
         logger.warning(
-            f'Отклонена регистрация нового пользователя (Почта или логин не подтверждены.) {request.data.email}: {request.ip}')
+            f'Отклонена регистрация нового пользователя (Почта или логин не подтверждены.) '
+            f'{request.data.email or request.data.login}: {request.ip}')
         return AnswerConstructor.create(AnswerType.REJECT, cause='Почта или логин не подтверждены.')
