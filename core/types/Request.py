@@ -15,7 +15,8 @@ class RequestType(enum.Enum):
 
 
 class EncryptionKey(BaseModel):
-    email: str
+    email: Optional[str]
+    login: Optional[str]
 
 
 class Registration(BaseModel):
