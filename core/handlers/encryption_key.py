@@ -15,5 +15,5 @@ async def encryption_key(request):
         logger.info(f'Попытка получения ключа шифрования по несуществующему логину {request.data.login}: {request.ip}')
     else:
         answer = AnswerConstructor.create(AnswerType.KEY, key=Cryptographer.get_public_key())
-        logger.info(f'Выдан публичный ключ для {request.data.email or request.data.email}: {request.ip}')
+        logger.info(f'Выдан публичный ключ для {request.data.email or request.data.login}: {request.ip}')
     return answer

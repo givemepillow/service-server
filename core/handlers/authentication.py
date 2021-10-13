@@ -9,12 +9,12 @@ from core.types import AnswerType
 async def authentication(request):
     if request.data.email and not await Database.exists_email(email=request.data.email):
         logger.info(
-            f"Отклонена аутентификация(Неверный адрес электронной почты.) "
+            f"Отклонена аутентификация (Неверный адрес электронной почты.) "
             f"{request.data.email}: "
             f"{request.ip}")
     elif request.data.login and not await Database.exists_login(login=request.data.login):
         logger.info(
-            f"Отклонена аутентификация(Неверный логин.) "
+            f"Отклонена аутентификация (Неверный логин.) "
             f"{request.data.login}: "
             f"{request.ip}")
     else:
@@ -38,7 +38,7 @@ async def authentication(request):
             return AnswerConstructor.create(AnswerType.ACCEPT, info='Вход подтверждён.')
         else:
             logger.info(
-                f"Отклонена аутентификация(Неверный пароль.) "
+                f"Отклонена аутентификация (Неверный пароль.) "
                 f"{request.data.login or request.data.email}: "
                 f"{request.ip}")
 
