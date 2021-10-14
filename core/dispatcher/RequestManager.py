@@ -9,9 +9,10 @@ from core.types import AnswerType
 
 class RequestManager:
     @classmethod
-    async def handle_request(cls, data):
+    async def handle_request(cls, data, ip):
         try:
             request = RequestParser.extract_request(data)
+            request.ip = ip
         except ValueError as err:
             logger.warning(err)
             return bytes(AnswerConstructor.create(AnswerType.ERROR, message="Невалидный запрос."), encoding="utf-8")
