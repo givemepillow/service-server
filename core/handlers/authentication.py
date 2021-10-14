@@ -17,8 +17,12 @@ async def authentication(request):
             f"Отклонена аутентификация (Неверный логин.) "
             f"{request.data.login}: "
             f"{request.ip}")
+    elif not request.data.login and not request.data.email:
+        logger.warning(
+            f"Отклонена аутентификация (Пустой логин и пароль.) "
+            f"{request.data.login}: "
+            f"{request.ip}")
     else:
-
         try:
             password_from_request = Cryptographer.decrypt(request.data.password)
         except ValueError:
