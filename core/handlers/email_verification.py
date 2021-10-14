@@ -16,7 +16,7 @@ async def email_verification(request):
     try:
         await Verify.add_code(email=request.data.email, login=request.data.login)
     except ValueError as err:
-        logger.exception(err)
+        logger.error(err)
         return AnswerConstructor.create(
             AnswerType.ERROR, message='Не удалось отправить код подтверждения на указанный адрес электронной почты.')
     logger.info(f'Отправлен код подтверждения почты {request.data.email}: {request.ip}')
