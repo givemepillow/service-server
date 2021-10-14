@@ -11,5 +11,4 @@ handlers = {
     RequestType.EMAIL_VERIFICATION: email_verification,
     RequestType.CODE_VERIFICATION: code_verification,
     RequestType.ENCRYPTION_KEY: encryption_key
-
 }

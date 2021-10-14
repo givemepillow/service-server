@@ -3,10 +3,9 @@ from loguru import logger
 from core.converters import AnswerConstructor
 from core.types import AnswerType
 from core.security import Cryptographer
+from database import Database
 
 __all__ = ['encryption_key']
-
-from database import Database
 
 
 async def encryption_key(request):

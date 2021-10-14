@@ -3,7 +3,6 @@ from email.mime.text import MIMEText
 
 
 class MailBuilder:
-
     __footer = '\n\nДанное сообщение сгенерировано автоматичеки.'
 
     @classmethod

@@ -1,5 +1,3 @@
-import base64
-
 from loguru import logger
 
 from core.security import Cryptographer, PasswordManager
