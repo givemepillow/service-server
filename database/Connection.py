@@ -2,12 +2,16 @@ import asyncpg
 
 
 class Connection:
-    __connection: asyncpg.connection
+    __pool: asyncpg.pool = None
 
     @classmethod
     async def create(cls, user, password, database, host):
+        if cls.__pool is not None:
+            cls.__pool.terminate()
         try:
-            cls.__connection = await asyncpg.connect(
+            cls.__pool = await asyncpg.create_pool(
+                min_size=10,
+                max_size=10,
                 user=user,
                 password=password,
                 database=database,
@@ -16,8 +20,8 @@ class Connection:
         except asyncpg.exceptions.InvalidPasswordError as e:
             print(f"{str(e).capitalize()}.")
 
-        return cls.__connection
+        return cls.__pool
 
     @classmethod
     async def close(cls):
-        await cls.__connection.close()
+        await cls.__pool.terminate()
