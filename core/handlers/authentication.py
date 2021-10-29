@@ -39,11 +39,11 @@ async def authentication(request):
                 f"Подтверждена аутентификация "
                 f"{request.data.login or request.data.email}: "
                 f"{request.ip}")
-            return AnswerConstructor.create(AnswerType.ACCEPT, info='Вход подтверждён.')
+            return AnswerConstructor.create(AnswerType.ACCEPT, message='Вход подтверждён.')
         else:
             logger.info(
                 f"Отклонена аутентификация (Неверный пароль.) "
                 f"{request.data.login or request.data.email}: "
                 f"{request.ip}")
 
-    return AnswerConstructor.create(AnswerType.REJECT, cause='Неверный логин или пароль.')
+    return AnswerConstructor.create(AnswerType.REJECT, message='Неверный логин или пароль.')

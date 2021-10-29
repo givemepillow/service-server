@@ -28,13 +28,13 @@ async def registration(request):
         )
         if db_answer:
             logger.info(f"Зарегистрирован новый пользователь {request.data.email}: {request.ip}")
-            return AnswerConstructor.create(AnswerType.ACCEPT, info='Регистрация завершена.')
+            return AnswerConstructor.create(AnswerType.ACCEPT, message='Регистрация завершена.')
         else:
             logger.info(
                 f'Отклонена регистрация нового пользователя (Недопустимые данные.) {request.data.email}: {request.ip}')
-            return AnswerConstructor.create(AnswerType.REJECT, cause='Недопустимые данные.')
+            return AnswerConstructor.create(AnswerType.REJECT, message='Недопустимые данные.')
     else:
         logger.warning(
             f'Отклонена регистрация нового пользователя (Почта или логин не подтверждены.) '
             f'{request.data.email or request.data.login}: {request.ip}')
-        return AnswerConstructor.create(AnswerType.REJECT, cause='Почта или логин не подтверждены.')
+        return AnswerConstructor.create(AnswerType.REJECT, message='Почта или логин не подтверждены.')

@@ -10,11 +10,11 @@ __all__ = ['encryption_key']
 
 async def encryption_key(request):
     if request.data.login and not await Database.exists_login(request.data.login):
-        answer = AnswerConstructor.create(AnswerType.REJECT, cause='Несуществующий логин.')
+        answer = AnswerConstructor.create(AnswerType.REJECT, message='Несуществующий логин.')
         logger.info(f'Попытка получения ключа шифрования по несуществующему логину '
                     f'{request.data.login}: {request.ip}')
     elif request.data.email and not await Database.exists_email(request.data.email):
-        answer = AnswerConstructor.create(AnswerType.REJECT, cause='Несуществующий адрес электронной почты.')
+        answer = AnswerConstructor.create(AnswerType.REJECT, message='Несуществующий адрес электронной почты.')
         logger.info(f'Попытка получения ключа шифрования по несуществующему адресу электронной почты '
                     f'{request.data.login}: {request.ip}')
     else:
