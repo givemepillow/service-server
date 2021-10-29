@@ -1,2 +1,2 @@
-from .Answer import AnswerType, answers
-from .Request import Request, RequestType, requests
+from .Responses import ResponseType, responses
+from .Requests import Request, RequestType, requests

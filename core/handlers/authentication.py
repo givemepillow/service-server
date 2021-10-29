@@ -3,7 +3,7 @@ from loguru import logger
 from core.converters import AnswerConstructor
 from core.security import Cryptographer, PasswordManager
 from database import Database
-from core.types import AnswerType
+from core.types import ResponseType
 
 
 async def authentication(request):
@@ -31,7 +31,7 @@ async def authentication(request):
                 f"{request.data.login or request.data.email}:"
                 f" {request.ip}"
             )
-            return AnswerConstructor.create(AnswerType.ERROR, message='Пароль отклонён системой безопасности.')
+            return AnswerConstructor.create(ResponseType.ERROR, message='Пароль отклонён системой безопасности.')
 
         password_hash = await Database.get_password(login=request.data.login, email=request.data.email)
         if PasswordManager.verification(password_hash=password_hash, password=password_from_request):
@@ -39,11 +39,11 @@ async def authentication(request):
                 f"Подтверждена аутентификация "
                 f"{request.data.login or request.data.email}: "
                 f"{request.ip}")
-            return AnswerConstructor.create(AnswerType.ACCEPT, message='Вход подтверждён.')
+            return AnswerConstructor.create(ResponseType.ACCEPT, message='Вход подтверждён.')
         else:
             logger.info(
                 f"Отклонена аутентификация (Неверный пароль.) "
                 f"{request.data.login or request.data.email}: "
                 f"{request.ip}")
 
-    return AnswerConstructor.create(AnswerType.REJECT, message='Неверный логин или пароль.')
+    return AnswerConstructor.create(ResponseType.REJECT, message='Неверный логин или пароль.')
