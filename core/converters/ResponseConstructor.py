@@ -2,7 +2,7 @@ import json
 from core.types.Responses import Response, ResponseType, responses
 
 
-class AnswerConstructor:
+class ResponseConstructor:
 
     @classmethod
     def create(cls, answer_type, **kwargs):

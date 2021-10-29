@@ -1,2 +1,2 @@
-from .AnswerConstructor import AnswerConstructor
+from .ResponseConstructor import ResponseConstructor
 from .RequestParser import RequestParser
