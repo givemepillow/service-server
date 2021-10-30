@@ -131,3 +131,6 @@ dmypy.json
 # GMAIL
 *.pickle
 *.json
+
+# IDE
+.idea/
