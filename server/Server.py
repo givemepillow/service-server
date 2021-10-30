@@ -27,11 +27,10 @@ class Server:
                     writer.write(answer)
                     await writer.drain()
                 else:
-                    logger.info("Закрытие очередного соединения.")
                     writer.close()
                     break
             except ConnectionResetError:
-                logger.warning("Принудительное закрытие очередного соединения.")
+                logger.warning("Принудительное закрытие соединения.")
                 writer.close()
                 break
 
