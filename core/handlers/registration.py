@@ -9,6 +9,13 @@ from core.verification import Verify
 
 async def registration(request):
     if await Verify.is_verified(request.data.email, request.data.login):
+        if await Database.exists_login(login=request.data.login) or await Database.exists_email(email=request.data.email):
+            logger.warning(
+                f"Попытка регистрации существующего пользователя "
+                f"{request.data.login or request.data.email}:"
+                f" {request.ip}"
+            )
+            return ResponseConstructor.create(ResponseType.REJECT, message='Почта или логин уже зарегестрированы!.')
         try:
             encrypted_password = Cryptographer.decrypt(request.data.password).decode()
         except ValueError:
