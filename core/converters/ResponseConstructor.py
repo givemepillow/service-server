@@ -1,5 +1,4 @@
-import json
-from core.types.Responses import Response, ResponseType, responses
+from core.types.Responses import Response, responses
 
 
 class ResponseConstructor:
@@ -9,4 +8,7 @@ class ResponseConstructor:
         data = dict()
         for field in kwargs:
             data[field] = kwargs[field]
-        return Response(type=answer_type, data=responses[answer_type].parse_obj(data)).json()
+        return Response.construct(
+            type=answer_type,
+            data=responses[answer_type].parse_obj(data)
+        ).json()
