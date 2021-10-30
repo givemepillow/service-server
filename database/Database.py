@@ -14,6 +14,18 @@ class Database:
         cls.__connection_pool = connection
 
     @classmethod
+    async def get_email(cls, login):
+        async with cls.__connection_pool.acquire() as connection:
+            result = await connection.fetcho('SELECT email FROM users WHERE login = $1', login)
+            return result[0][0]
+
+    @classmethod
+    async def get_login(cls, email):
+        async with cls.__connection_pool.acquire() as connection:
+            result = await connection.fetcho('SELECT login FROM users WHERE email = $1', email)
+            return result[0][0]
+
+    @classmethod
     async def get_password(cls, email, login):
         async with cls.__connection_pool.acquire() as connection:
             if email:
