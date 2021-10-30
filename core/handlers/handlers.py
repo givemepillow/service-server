@@ -5,6 +5,9 @@ from .code_verification import code_verification
 from .encryption_key import encryption_key
 from .available_login import available_login
 from .available_email import available_email
+from .recovery_email_verification import recovery_email_verification
+from .recovery_code_verification import recovery_code_verification
+from .new_password import new_password
 from core.types import RequestType
 
 handlers = {
@@ -14,5 +17,8 @@ handlers = {
     RequestType.CODE_VERIFICATION: code_verification,
     RequestType.ENCRYPTION_KEY: encryption_key,
     RequestType.AVAILABLE_LOGIN: available_login,
-    RequestType.AVAILABLE_EMAIL: available_email
+    RequestType.AVAILABLE_EMAIL: available_email,
+    RequestType.RECOVERY_EMAIl_VERIFICATION: recovery_email_verification,
+    RequestType.RECOVERY_CODE_VERIFICATION: recovery_code_verification,
+    RequestType.NEW_PASSWORD: new_password
 }
