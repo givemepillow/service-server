@@ -14,6 +14,15 @@ class Database:
         cls.__connection_pool = connection
 
     @classmethod
+    async def update_password(cls, login, password):
+        try:
+            async with cls.__connection_pool.acquire() as connection:
+                result = await connection.fetch('UPDATE users SET password_hash = $1 WHERE login = $2', password, login)
+                return True
+        except Exception as e:
+            return False
+
+    @classmethod
     async def get_email(cls, login):
         async with cls.__connection_pool.acquire() as connection:
             result = await connection.fetch('SELECT email FROM users WHERE login = $1', login)
