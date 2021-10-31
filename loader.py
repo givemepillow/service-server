@@ -19,7 +19,7 @@ class DatabaseLoader:
     async def start(cls):
         envs = envfileparser.get_env_from_file()
         # Creating connection with database.
-        connection = await Connection.create(envs['USER'], envs['PASSWORD'], envs['DB'], envs['HOST'])
+        connection = await Connection.create(envs['DB_USER'], envs['DB_PASSWORD'], envs['DB_NAME'], envs['DB_HOST'])
         await Database.connect(connection)
 
 
