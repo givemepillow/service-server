@@ -8,17 +8,17 @@ from core.types import ResponseType, RequestType
 class RequestManager:
     @classmethod
     async def handle_request(cls, data, ip):
+        to_send = None
         try:
             request = RequestParser.extract_request(data)
             request.ip = ip
+            to_send = await handlers[RequestType(request.type)](request)
         except ValueError as err:
             logger.warning(err)
-            return bytes(ResponseConstructor.create(ResponseType.ERROR, message="Невалидный запрос."), encoding="utf-8")
-
-        try:
-            to_send = await handlers[RequestType(request.type)](request)
+            to_send = ResponseConstructor.create(ResponseType.ERROR, message="Невалидный запрос.")
         except KeyError:
             logger.warning('Получен неизвестный тип запроса. Нет соответствующего хендлера.')
             to_send = ResponseConstructor.create(ResponseType.ERROR, message="Запрос не распознан.")
-
-        return bytes(to_send, encoding="utf-8")
+        finally:
+            return bytes(to_send if to_send else ResponseConstructor.create(
+                ResponseType.ERROR, message="Внутрисерверная ошибка."), encoding="utf-8")
