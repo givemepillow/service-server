@@ -41,3 +41,10 @@ async def new_password(request):
             logger.info(
                 f'Обновлён пароль {_email or _login}: {request.ip}')
             return ResponseConstructor.create(ResponseType.ACCEPT, message='Пароль успешно обновлён.')
+    else:
+        logger.warning(
+            f"Попытка смены пароля без подтверждения почты. "
+            f"{request.data.login or request.data.email}:"
+            f" {request.ip}"
+        )
+        return ResponseConstructor.create(ResponseType.REJECT, message='Почта не подтверждена.')
