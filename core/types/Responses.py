@@ -11,6 +11,11 @@ class ResponseType(enum.Enum):
     REJECT: int = 202
     ACCEPT: int = 203
     KEY: int = 205
+    STATS: int = 211
+
+
+class Stats(BaseModel):
+    clients_count: int
 
 
 class Key(BaseModel):
@@ -33,7 +38,8 @@ responses = {
     ResponseType.ERROR: Error,
     ResponseType.REJECT: Reject,
     ResponseType.ACCEPT: Accept,
-    ResponseType.KEY: Key
+    ResponseType.KEY: Key,
+    ResponseType.STATS: Stats
 }
 
 
@@ -43,5 +49,6 @@ class Response(BaseModel):
         Error,
         Reject,
         Accept,
-        Key
+        Key,
+        Stats
     ]
