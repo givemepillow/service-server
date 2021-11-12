@@ -17,6 +17,11 @@ class RequestType(enum.Enum):
     RECOVERY_EMAIl_VERIFICATION: int = 108
     RECOVERY_CODE_VERIFICATION: int = 109
     NEW_PASSWORD: int = 110
+    STATS: int = 111
+
+
+class Stats(BaseModel):
+    pass
 
 
 class NewPassword(BaseModel):
@@ -85,7 +90,8 @@ class Request(BaseModel):
         AvailableEmail,
         RecoveryEmailVerification,
         RecoveryCodeVerification,
-        NewPassword
+        NewPassword,
+        Stats
     ]
     ip: Optional[str]
 
@@ -100,5 +106,6 @@ requests = {
     RequestType.AVAILABLE_LOGIN: AvailableLogin,
     RequestType.RECOVERY_CODE_VERIFICATION: RecoveryCodeVerification,
     RequestType.RECOVERY_EMAIl_VERIFICATION: RecoveryEmailVerification,
-    RequestType.NEW_PASSWORD: NewPassword
+    RequestType.NEW_PASSWORD: NewPassword,
+    RequestType.STATS: Stats
 }
