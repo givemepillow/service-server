@@ -5,6 +5,7 @@ import asyncio
 from loguru import logger
 
 from core.dispatcher.RequestManager import RequestManager
+from statistics import Statistics
 
 
 class Server:
@@ -14,6 +15,7 @@ class Server:
 
     @classmethod
     async def handle(cls, reader, writer):
+        Statistics.up()
         while True:
             try:
                 data = await reader.read(cls.__buffer_size)
@@ -33,6 +35,7 @@ class Server:
                 logger.warning("Принудительное закрытие соединения.")
                 writer.close()
                 break
+        Statistics.down()
 
     @classmethod
     async def start(cls):
@@ -45,7 +48,6 @@ class Server:
         async with server:
             logger.info(f"Начало работы сервера. Адрес: {cls.__address}. Порт: {cls.__port}")
             await server.serve_forever()
-
 
 # class Server2:
 #     __selector = None
