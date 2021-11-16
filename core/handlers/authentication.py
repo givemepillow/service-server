@@ -39,7 +39,9 @@ async def authentication(request):
                 f"Подтверждена аутентификация "
                 f"{request.data.login or request.data.email}: "
                 f"{request.ip}")
-            return ResponseConstructor.create(ResponseType.ACCEPT, message='Вход подтверждён.')
+            return ResponseConstructor.create(ResponseType.AUTH_COMPLETE,
+                                              message='Аунтентификация подтверждена',
+                                              user_id=1000)
         else:
             logger.info(
                 f"Отклонена аутентификация (Неверный пароль.) "
