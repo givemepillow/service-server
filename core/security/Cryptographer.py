@@ -11,10 +11,10 @@ class Cryptographer:
     private_key: RSAPrivateKey
 
     @classmethod
-    def generate_key(cls):
+    def generate_key(cls, size):
         cls.private_key = rsa.generate_private_key(
             public_exponent=65537,
-            key_size=2048 * 2,
+            key_size=size,
             backend=default_backend()
         )
 
