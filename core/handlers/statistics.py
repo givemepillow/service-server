@@ -6,5 +6,6 @@ from statistics import Statistics
 async def statistics(_):
     return ResponseConstructor.create(
         ResponseType.STATS,
-        clients_count=Statistics.get_clients_count()
+        online=Statistics.get_online_count(),
+        offline=Statistics.get_offline_count()
     )

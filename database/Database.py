@@ -9,6 +9,14 @@ class Database:
     LOGIN_QUERY = 'SELECT login FROM users WHERE login = $1'
     EMAIL_QUERY = 'SELECT email FROM users WHERE email = $1'
 
+    COUNT_ALL_QUERY = 'SELECT COUNT(1) FROM users'
+
+    @classmethod
+    async def get_count(cls):
+        async with cls.__connection_pool.acquire() as connection:
+            result = await connection.fetch(cls.COUNT_ALL_QUERY)
+            return result[0][0]
+
     @classmethod
     async def connect(cls, connection: asyncpg.Connection):
         cls.__connection_pool = connection
