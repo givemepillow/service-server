@@ -10,6 +10,22 @@ class Database:
     EMAIL_QUERY = 'SELECT email FROM users WHERE email = $1'
 
     COUNT_ALL_QUERY = 'SELECT COUNT(1) FROM users'
+    USER_ID_BY_LOGIN_QUERY = 'SELECt id FROM users WHERE login = $1'
+    USER_ID_BY_EMAIL_QUERY = 'SELECt id FROM users WHERE email = $1'
+
+    @classmethod
+    @logger.catch
+    async def get_user_id_by_login(cls, login):
+        async with cls.__connection_pool.acquire() as connection:
+            result = await connection.fetch(cls.USER_ID_BY_LOGIN_QUERY, login)
+            return result[0][0]
+
+    @classmethod
+    @logger.catch
+    async def get_user_id_by_email(cls, email):
+        async with cls.__connection_pool.acquire() as connection:
+            result = await connection.fetch(cls.USER_ID_BY_EMAIL_QUERY, email)
+            return result[0][0]
 
     @classmethod
     async def get_count(cls):
@@ -25,9 +41,9 @@ class Database:
     async def update_password(cls, login, password):
         try:
             async with cls.__connection_pool.acquire() as connection:
-                result = await connection.fetch('UPDATE users SET password_hash = $1 WHERE login = $2', password, login)
+                await connection.fetch('UPDATE users SET password_hash = $1 WHERE login = $2', password, login)
                 return True
-        except Exception as e:
+        except Exception:
             return False
 
     @classmethod
