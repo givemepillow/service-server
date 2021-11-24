@@ -43,9 +43,14 @@ async def authentication(request):
                 user_id = await Database.get_user_id_by_login(login=request.data.login)
             else:
                 user_id = await Database.get_user_id_by_email(email=request.data.email)
+            first_name = await Database.get_user_first_name(user_id=user_id)
+            last_name = await Database.get_user_last_name(user_id=user_id)
             return ResponseConstructor.create(ResponseType.AUTH_COMPLETE,
                                               message='Аунтентификация подтверждена',
-                                              user_id=user_id)
+                                              user_id=user_id,
+                                              first_name=first_name,
+                                              last_name=last_name
+                                              )
         else:
             logger.info(
                 f"Отклонена аутентификация (Неверный пароль.) "

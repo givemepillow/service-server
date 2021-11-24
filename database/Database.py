@@ -10,8 +10,24 @@ class Database:
     EMAIL_QUERY = 'SELECT email FROM users WHERE email = $1'
 
     COUNT_ALL_QUERY = 'SELECT COUNT(1) FROM users'
-    USER_ID_BY_LOGIN_QUERY = 'SELECt id FROM users WHERE login = $1'
-    USER_ID_BY_EMAIL_QUERY = 'SELECt id FROM users WHERE email = $1'
+    USER_ID_BY_LOGIN_QUERY = 'SELECT id FROM users WHERE login = $1'
+    USER_ID_BY_EMAIL_QUERY = 'SELECT id FROM users WHERE email = $1'
+    USER_FIRST_NAME_QUERY = 'SELECT first_name FROM users WHERE  id = $1'
+    USER_LAST_NAME_QUERY = 'SELECT last_name FROM users WHERE  id = $1'
+
+    @classmethod
+    @logger.catch
+    async def get_user_first_name(cls, user_id):
+        async with cls.__connection_pool.acquire() as connection:
+            result = await connection.fetch(cls.USER_FIRST_NAME_QUERY, user_id)
+            return result[0][0]
+
+    @classmethod
+    @logger.catch
+    async def get_user_last_name(cls, user_id):
+        async with cls.__connection_pool.acquire() as connection:
+            result = await connection.fetch(cls.USER_LAST_NAME_QUERY, user_id)
+            return result[0][0]
 
     @classmethod
     @logger.catch
