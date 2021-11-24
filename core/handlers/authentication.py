@@ -39,17 +39,19 @@ async def authentication(request):
                 f"Подтверждена аутентификация "
                 f"{request.data.login or request.data.email}: "
                 f"{request.ip}")
-            if request.data.login is not None:
+            if request.data.login:
                 user_id = await Database.get_user_id_by_login(login=request.data.login)
             else:
                 user_id = await Database.get_user_id_by_email(email=request.data.email)
+            login = request.data.login or await Database.get_login(email=request.data.email)
             first_name = await Database.get_user_first_name(user_id=user_id)
             last_name = await Database.get_user_last_name(user_id=user_id)
             return ResponseConstructor.create(ResponseType.AUTH_COMPLETE,
                                               message='Аунтентификация подтверждена',
                                               user_id=user_id,
                                               first_name=first_name,
-                                              last_name=last_name
+                                              last_name=last_name,
+                                              login=login
                                               )
         else:
             logger.info(
