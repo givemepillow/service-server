@@ -9,6 +9,7 @@ from .recovery_email_verification import recovery_email_verification
 from .recovery_code_verification import recovery_code_verification
 from .new_password import new_password
 from .statistics import statistics
+from .search import search
 from core.types import RequestType
 
 handlers = {
@@ -22,5 +23,6 @@ handlers = {
     RequestType.RECOVERY_EMAIl_VERIFICATION: recovery_email_verification,
     RequestType.RECOVERY_CODE_VERIFICATION: recovery_code_verification,
     RequestType.NEW_PASSWORD: new_password,
-    RequestType.STATS: statistics
+    RequestType.STATS: statistics,
+    RequestType.SEARCH: search
 }

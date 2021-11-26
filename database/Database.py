@@ -15,6 +15,13 @@ class Database:
     USER_FIRST_NAME_QUERY = 'SELECT first_name FROM users WHERE  id = $1'
     USER_LAST_NAME_QUERY = 'SELECT last_name FROM users WHERE  id = $1'
 
+    SEARCH_QUERY_BY_FIRST_LAST_NAME = 'SELECT id, login, first_name, last_name FROM users ' \
+                                      'WHERE (lower(first_name) LIKE $1 ' \
+                                      'AND lower(last_name) LIKE $2) OR ' \
+                                      '(lower(first_name) LIKE $2 AND lower(last_name) LIKE $1)'
+    SEARCH_QUERY = 'SELECT id, login, first_name, last_name FROM users ' \
+                   'WHERE lower(login) LIKE $1 OR lower(first_name) LIKE $1 OR lower(last_name) LIKE $1'
+
     @classmethod
     @logger.catch
     async def get_user_first_name(cls, user_id):
@@ -115,3 +122,16 @@ class Database:
             except asyncpg.exceptions.UniqueViolationError as e:
                 logger.exception(e)
             return False
+
+    @classmethod
+    async def search_users(cls, keyword1, keyword2=None):
+        async with cls.__connection_pool.acquire() as connection:
+            if not keyword2:
+                result = await connection.fetch(cls.SEARCH_QUERY, keyword1.lower() + '%')
+            else:
+                result = await connection.fetch(
+                    cls.SEARCH_QUERY_BY_FIRST_LAST_NAME,
+                    keyword1.lower() + '%',
+                    keyword2.lower() + '%'
+                )
+            return [dict(r) for r in result]
