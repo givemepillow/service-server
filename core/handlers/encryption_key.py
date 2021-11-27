@@ -19,6 +19,5 @@ async def encryption_key(request):
                     f'{request.data.login}: {request.ip}')
     else:
         answer = ResponseConstructor.create(ResponseType.KEY, key=Cryptographer.get_public_key())
-        logger.info(f'Выдан публичный ключ для '
-                    f'{request.data.email or request.data.login}: {request.ip}')
+        logger.info(f'Выдан публичный ключ: {request.ip}')
     return answer

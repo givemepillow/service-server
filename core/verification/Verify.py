@@ -27,7 +27,10 @@ class Verify:
 
     @classmethod
     async def is_verified(cls, email, login):
-        return email in cls.email_codes and cls.email_codes[email].verified and cls.email_codes[email].login == login
+        if email in cls.email_codes and cls.email_codes[email].verified and cls.email_codes[email].login == login:
+            del cls.email_codes[email]
+            return True
+        return False
 
     @classmethod
     async def verification(cls, email, code):

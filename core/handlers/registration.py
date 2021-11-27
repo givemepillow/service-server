@@ -5,6 +5,7 @@ from database import Database
 from core.converters import ResponseConstructor
 from core.types import ResponseType
 from core.verification import Verify
+from statistics import Statistics
 
 
 async def registration(request):
@@ -35,6 +36,7 @@ async def registration(request):
         )
         if db_answer:
             logger.info(f"Зарегистрирован новый пользователь {request.data.email}: {request.ip}")
+            await Statistics.update_all()
             return ResponseConstructor.create(ResponseType.ACCEPT, message='Регистрация завершена.')
         else:
             logger.info(

@@ -5,6 +5,8 @@ from database import Connection, Database
 from mail import MailSender
 import envfileparser
 
+from statistics import Statistics
+
 
 class MailLoader:
     sender: MailSender
@@ -19,7 +21,7 @@ class DatabaseLoader:
     async def start(cls):
         envs = envfileparser.get_env_from_file()
         # Creating connection with database.
-        connection = await Connection.create(envs['USER'], envs['PASSWORD'], envs['DB'], envs['HOST'])
+        connection = await Connection.create(envs['DB_USER'], envs['DB_PASSWORD'], envs['DB_NAME'], envs['DB_HOST'])
         await Database.connect(connection)
 
 
@@ -36,4 +38,10 @@ class LoggerLoader:
 class CryptographerLoader:
     @classmethod
     def start(cls):
-        Cryptographer.generate_key()
+        Cryptographer.generate_key(1024)
+
+
+class StatisticLoader:
+    @classmethod
+    async def start(cls):
+        await Statistics.update_all()

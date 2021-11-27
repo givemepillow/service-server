@@ -5,6 +5,7 @@ import asyncio
 from loguru import logger
 
 from core.dispatcher.RequestManager import RequestManager
+from statistics import Statistics
 
 
 class Server:
@@ -14,15 +15,17 @@ class Server:
 
     @classmethod
     async def handle(cls, reader, writer):
+        ip, port = writer.get_extra_info('peername')
+        await Statistics.connection(port=port)
         while True:
             try:
                 data = await reader.read(cls.__buffer_size)
-                ip, port = writer.get_extra_info('peername')
                 if data:
                     request = data.decode('utf-8')
                     answer = await RequestManager.handle_request(
                         data=request,
-                        ip=ip
+                        ip=ip,
+                        port=port
                     )
                     writer.write(answer)
                     await writer.drain()
@@ -33,6 +36,7 @@ class Server:
                 logger.warning("Принудительное закрытие соединения.")
                 writer.close()
                 break
+        await Statistics.disconnection(port)
 
     @classmethod
     async def start(cls):
@@ -45,7 +49,6 @@ class Server:
         async with server:
             logger.info(f"Начало работы сервера. Адрес: {cls.__address}. Порт: {cls.__port}")
             await server.serve_forever()
-
 
 # class Server2:
 #     __selector = None
