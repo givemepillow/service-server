@@ -19,7 +19,12 @@ class RequestType(enum.Enum):
     NEW_PASSWORD: int = 110
     STATS: int = 111
     SEARCH: int = 112
-    LOGOUT: int = 213
+    LOGOUT: int = 113
+    USER_STATUS: int = 114
+
+
+class UserStatus(BaseModel):
+    user_id: int
 
 
 class Logout(BaseModel):
@@ -104,7 +109,8 @@ class Request(BaseModel):
         NewPassword,
         Stats,
         Search,
-        Logout
+        Logout,
+        UserStatus
     ]
     ip: Optional[str]
     port: Optional[int]
@@ -123,5 +129,6 @@ requests = {
     RequestType.NEW_PASSWORD: NewPassword,
     RequestType.STATS: Stats,
     RequestType.SEARCH: Search,
-    RequestType.LOGOUT: Logout
+    RequestType.LOGOUT: Logout,
+    RequestType.USER_STATUS: UserStatus
 }
