@@ -7,11 +7,11 @@ from core.types import ResponseType, RequestType
 
 class RequestManager:
     @classmethod
-    async def handle_request(cls, data, ip):
+    async def handle_request(cls, data, ip, port):
         to_send = None
         try:
             request = RequestParser.extract_request(data)
-            request.ip = ip
+            request.ip, request.port = ip, port
             to_send = await handlers[RequestType(request.type)](request)
         except ValueError as err:
             logger.warning(err)

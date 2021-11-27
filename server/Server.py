@@ -15,16 +15,17 @@ class Server:
 
     @classmethod
     async def handle(cls, reader, writer):
-        Statistics.up()
+        ip, port = writer.get_extra_info('peername')
+        await Statistics.connection(port=port)
         while True:
             try:
                 data = await reader.read(cls.__buffer_size)
-                ip, port = writer.get_extra_info('peername')
                 if data:
                     request = data.decode('utf-8')
                     answer = await RequestManager.handle_request(
                         data=request,
-                        ip=ip
+                        ip=ip,
+                        port=port
                     )
                     writer.write(answer)
                     await writer.drain()
@@ -35,7 +36,7 @@ class Server:
                 logger.warning("Принудительное закрытие соединения.")
                 writer.close()
                 break
-        Statistics.down()
+        await Statistics.disconnection(port)
 
     @classmethod
     async def start(cls):

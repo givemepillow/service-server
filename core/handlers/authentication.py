@@ -4,6 +4,7 @@ from core.converters import ResponseConstructor
 from core.security import Cryptographer, PasswordManager
 from database import Database
 from core.types import ResponseType
+from statistics import Statistics
 
 
 async def authentication(request):
@@ -46,6 +47,7 @@ async def authentication(request):
             login = request.data.login or await Database.get_login(email=request.data.email)
             first_name = await Database.get_user_first_name(user_id=user_id)
             last_name = await Database.get_user_last_name(user_id=user_id)
+            await Statistics.connection(port=request.port, user_id=user_id)
             return ResponseConstructor.create(ResponseType.AUTH_COMPLETE,
                                               message='Аунтентификация подтверждена',
                                               user_id=user_id,
