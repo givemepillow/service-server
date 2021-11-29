@@ -10,8 +10,8 @@ from statistics import Statistics
 
 class Server:
     __buffer_size = 1024 * 5
-    __address = '127.0.0.1'
-    __port = 6767
+    __address = None
+    __port = None
 
     @classmethod
     async def handle(cls, reader, writer):
@@ -39,7 +39,9 @@ class Server:
         await Statistics.disconnection(port)
 
     @classmethod
-    async def start(cls):
+    async def start(cls, port, address):
+        cls.__port = port
+        cls.__address = address
         await cls.main()
 
     @classmethod
