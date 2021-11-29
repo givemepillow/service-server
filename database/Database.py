@@ -51,16 +51,19 @@ class Database:
             return result[0][0]
 
     @classmethod
+    @logger.catch
     async def get_count(cls):
         async with cls.__connection_pool.acquire() as connection:
             result = await connection.fetch(cls.COUNT_ALL_QUERY)
             return result[0][0]
 
     @classmethod
+    @logger.catch
     async def connect(cls, connection: asyncpg.Connection):
         cls.__connection_pool = connection
 
     @classmethod
+    @logger.catch
     async def update_password(cls, login, password):
         try:
             async with cls.__connection_pool.acquire() as connection:
@@ -70,18 +73,21 @@ class Database:
             return False
 
     @classmethod
+    @logger.catch
     async def get_email(cls, login):
         async with cls.__connection_pool.acquire() as connection:
             result = await connection.fetch('SELECT email FROM users WHERE login = $1', login)
             return result[0][0]
 
     @classmethod
+    @logger.catch
     async def get_login(cls, email):
         async with cls.__connection_pool.acquire() as connection:
             result = await connection.fetch('SELECT login FROM users WHERE email = $1', email)
             return result[0][0]
 
     @classmethod
+    @logger.catch
     async def get_password(cls, email, login):
         async with cls.__connection_pool.acquire() as connection:
             if email:
@@ -91,6 +97,7 @@ class Database:
             return result[0][0]
 
     @classmethod
+    @logger.catch
     async def exists_email(cls, email):
         async with cls.__connection_pool.acquire() as connection:
             result = await connection.fetch(cls.EMAIL_QUERY, email)
@@ -99,6 +106,7 @@ class Database:
             return True
 
     @classmethod
+    @logger.catch
     async def exists_login(cls, login):
         async with cls.__connection_pool.acquire() as connection:
             result = await connection.fetch(cls.LOGIN_QUERY, login)
@@ -107,6 +115,7 @@ class Database:
             return True
 
     @classmethod
+    @logger.catch
     async def registration(cls, login, password, first_name, last_name, email):
         async with cls.__connection_pool.acquire() as connection:
             try:
@@ -124,6 +133,7 @@ class Database:
             return False
 
     @classmethod
+    @logger.catch
     async def search_users(cls, keyword1, keyword2=None):
         async with cls.__connection_pool.acquire() as connection:
             if not keyword2:
