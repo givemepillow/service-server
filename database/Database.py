@@ -134,6 +134,13 @@ class Database:
 
     @classmethod
     @logger.catch
+    async def get_user_info(cls, user_id):
+        async with cls.__connection_pool.acquire() as connection:
+            result = await connection.fetch('SELECT login, first_name, last_name FROM users WHERE id = $1', user_id)
+            return result[0]
+
+    @classmethod
+    @logger.catch
     async def search_users(cls, keyword1, keyword2=None):
         async with cls.__connection_pool.acquire() as connection:
             if not keyword2:

@@ -12,6 +12,7 @@ from .statistics import statistics
 from .search import search
 from .logout import logout
 from .user_online import user_online
+from .user_info import user_info
 from core.types import RequestType
 
 handlers = {
@@ -28,5 +29,6 @@ handlers = {
     RequestType.STATS: statistics,
     RequestType.SEARCH: search,
     RequestType.LOGOUT: logout,
-    RequestType.USER_STATUS: user_online
+    RequestType.USER_STATUS: user_online,
+    RequestType.USER_INFO: user_info
 }
