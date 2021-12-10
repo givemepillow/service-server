@@ -6,7 +6,6 @@ from statistics import Statistics
 
 async def user_info(request):
     info = await Database.get_user_info(request.data.user_id)
-    print(info)
     return ResponseConstructor.create(
         ResponseType.USER_INFO,
         user_id=request.data.user_id,
